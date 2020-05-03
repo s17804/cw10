@@ -1,6 +1,5 @@
-﻿using cw5.DAO;
-using cw5.DTO.Request;
-using cw5.Exceptions;
+﻿using cw5.DTO.Request;
+using cw5.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cw5.Controllers
@@ -20,41 +19,25 @@ namespace cw5.Controllers
         [Route("enrollNewStudent")]
         public IActionResult EnrollNewStudent(EnrollmentStudentRequest enrollmentStudentRequest)
         {
-
-            try
-            {
-                return Ok(_enrollmentsDbService.EnrollNewStudent(enrollmentStudentRequest));
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
+            return Ok(_enrollmentsDbService.EnrollNewStudent(enrollmentStudentRequest));
         }
 
         [HttpPost]
         [Route("promotions")]
         public IActionResult PromoteStudents(PromoteStudentsRequest promoteStudentsRequest)
         {
-            try
-            {
-                return Ok(_enrollmentsDbService.PromoteStudents(promoteStudentsRequest));
-            }
-            catch (BadRequestException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return Ok(_enrollmentsDbService.PromoteStudents(promoteStudentsRequest));
         }
-        
-        
+
+
         [HttpGet]
         [Route("getEnrollmentByStudentIndexSqlInjectionVulnerable")]
         public IActionResult GetEnrollmentByStudentIndexSqlInjectionVulnerable(string indexNumber)
         {
-            var enrollmentStudentResponse = 
+            var enrollmentStudentResponse =
                 _enrollmentsDbService.GetEnrollmentByStudentIndexSqlInjectionVulnerable(indexNumber);
 
-            if (enrollmentStudentResponse != null )
+            if (enrollmentStudentResponse != null)
             {
                 return Ok(enrollmentStudentResponse);
             }

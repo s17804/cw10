@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using cw5.DTO.Response;
+using cw5.Exceptions;
+using cw5.Models;
 using cw5.Settings;
 using static System.Int32;
 
-namespace cw5.DAO.impl
+namespace cw5.Services.impl
 {
     public class StudentsDbService : IStudentsDbService
     {
@@ -47,8 +49,7 @@ namespace cw5.DAO.impl
                            "LEFT JOIN Enrollment E ON S.IdEnrollment = E.IdEnrollment " +
                            "LEFT JOIN Studies St ON E.IdStudy = St.IdStudy WHERE S.IndexNumber = @indexNumber";
             using var connection =
-                new SqlConnection(
-                    "server=localhost;database=students_apdb;User=sa;Password=nzR4eFSMIs^WUJlvqhS8r@Wu804g!3MX");
+                new SqlConnection(AppSettingsUtils.GetConnectionString());
             using var command = new SqlCommand
             {
                 Connection = connection,
@@ -72,7 +73,18 @@ namespace cw5.DAO.impl
 
             }
         
-            return null;
+            throw new ResourceNotFoundException($"Student with indexNumber = {indexNumber} not found");
+        }
+
+        public bool CheckIfStudentExists(string index)
+        {
+            using var connection = new SqlConnection(AppSettingsUtils.GetConnectionString());
+            using var command = new SqlCommand {Connection = connection};
+            connection.Open();
+            command.CommandText = "SELECT 1 FROM Student S WHERE S.IndexNumber = @IndexNumber";
+            command.Parameters.AddWithValue("IndexNumber", index);
+
+            return Convert.ToBoolean(Parse(command.ExecuteScalar().ToString()));
         }
     }
 }

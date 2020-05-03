@@ -1,8 +1,7 @@
 ﻿using cw5.DTO.Request;
 using cw5.DTO.Response;
-using cw5.Models;
 
-namespace cw5.DAO
+namespace cw5.Services
 {
     public interface IEnrollmentsDbService
     {

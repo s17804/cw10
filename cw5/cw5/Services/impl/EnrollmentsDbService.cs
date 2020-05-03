@@ -4,11 +4,10 @@ using System.IO;
 using cw5.DTO.Request;
 using cw5.DTO.Response;
 using cw5.Exceptions;
-using cw5.Models;
 using cw5.Settings;
 using static System.Int32;
 
-namespace cw5.DAO.impl
+namespace cw5.Services.impl
 {
     public class EnrollmentsDbService : IEnrollmentsDbService
     {
@@ -39,7 +38,7 @@ namespace cw5.DAO.impl
                 };
             }
 
-            return null;
+            throw new ResourceNotFoundException($"Enrollment for Student with indexNumber = {indexNumber} not found");
         }
 
         public EnrollmentResponse EnrollNewStudent(EnrollmentStudentRequest enrollmentStudentRequest)
@@ -55,8 +54,8 @@ namespace cw5.DAO.impl
             var dataReader = command.ExecuteReader();
             if (!dataReader.Read())
             {
-                throw new BadRequestException("Studies by name " 
-                                              + enrollmentStudentRequest.Studies + " does not exist in database");;
+                throw new ResourceNotFoundException(
+                    $"Studies by name {enrollmentStudentRequest.Studies} does not exist in database");
             }
             var idStudy = Parse(dataReader["IdStudy"].ToString());
 
@@ -154,7 +153,7 @@ namespace cw5.DAO.impl
                 };
             }
 
-            throw new BadRequestException("Not Found");
+            throw new ResourceNotFoundException("Not Found");
         }
     }
 }
