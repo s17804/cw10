@@ -1,12 +1,14 @@
+using System.Text;
 using cw5.Middleware;
 using cw5.Services;
 using cw5.Services.impl;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace cw5
 {
@@ -25,7 +27,21 @@ namespace cw5
             services.AddSingleton<IStudentsDbService, StudentsDbService>();
             services.AddSingleton<IEnrollmentsDbService, EnrollmentsDbService>();
             services.AddSingleton<ILoggingService, LoggingService>();
-            services.AddControllers();
+            services.AddSingleton<IJwtLogInService, JwtLogInService>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = "Gakko",
+                    ValidAudience = "Students",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
+                };
+            });
+            services.AddControllers()
+                .AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +58,6 @@ namespace cw5
             
             app.UseHttpsRedirection();
             
-            // app.UseMiddleware<LoggingMiddleware>();
-
             app.UseMiddleware<ValidateIndexMiddleware>();
 
             app.UseRouting();

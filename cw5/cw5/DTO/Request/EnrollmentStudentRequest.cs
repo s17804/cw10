@@ -10,5 +10,7 @@ namespace cw5.DTO.Request
         [Required] public string LastName { get; set; }
         [Required] public DateTime BirthDate { get; set; }
         [Required] public string Studies { get; set; }
+        
+        [Required] public string Password { get; set; }
     }
 }

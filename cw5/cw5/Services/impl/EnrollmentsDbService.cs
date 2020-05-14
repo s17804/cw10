@@ -5,6 +5,7 @@ using cw5.DTO.Request;
 using cw5.DTO.Response;
 using cw5.Exceptions;
 using cw5.Settings;
+using cw5.Utils;
 using static System.Int32;
 
 namespace cw5.Services.impl
@@ -107,14 +108,19 @@ namespace cw5.Services.impl
 
             dataReader.Close();
             command.Parameters.Clear();
+            var salt = PasswordUtils.GenerateSalt();
+            
             command.CommandText =
-                @"INSERT INTO Student(IndexNumber, FirstName, LastName, BirthDate, IdEnrollment) 
-                VALUES (@IndexNumber, @FirstName, @LastName, @BirthDate, @IdEnrollment)";
+                @"INSERT INTO Student(IndexNumber, FirstName, LastName, BirthDate, IdEnrollment, Password, Salt) 
+                VALUES (@IndexNumber, @FirstName, @LastName, @BirthDate, @IdEnrollment, @Password, @Salt)";
             command.Parameters.AddWithValue("IndexNumber", enrollmentStudentRequest.Index);
             command.Parameters.AddWithValue("FirstName", enrollmentStudentRequest.FirstName);
             command.Parameters.AddWithValue("LastName", enrollmentStudentRequest.LastName);
             command.Parameters.AddWithValue("BirthDate", enrollmentStudentRequest.BirthDate);
             command.Parameters.AddWithValue("IdEnrollment", enrollmentResponse.IdEnrollment);
+            command.Parameters.AddWithValue("Password", 
+                PasswordUtils.CreateSaltedPasswordHash(enrollmentStudentRequest.Password, salt));
+            command.Parameters.AddWithValue("Salt", salt);
             command.ExecuteNonQuery();
 
             transaction.Commit();
@@ -135,7 +141,6 @@ namespace cw5.Services.impl
                 command.CommandText = fileInfo.OpenText().ReadToEnd();
                 command.ExecuteNonQuery();
             }
-            
             
             command.CommandText = "EXEC PromoteStudents @Semester, @Studies";
             command.Parameters.AddWithValue("Semester", promoteStudentsRequest.Semester);

@@ -113,10 +113,16 @@
 			"name": "cw5-EnrollNewStudent",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Index",
+						"value": "s1234",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Index\": \"s1236\",\n\t\"firstName\": \"Zenon\",\n\t\"lastName\": \"Abczyński\",\n\t\"BirthDate\": \"1994-03-05\",\n\t\"Studies\": \"Zarządzanie informacją dzienne\"\n\n}",
+					"raw": "{\n\t\"Index\": \"s1237\",\n\t\"firstName\": \"Dagmara\",\n\t\"lastName\": \"Dynia\",\n\t\"BirthDate\": \"1994-03-05\",\n\t\"Studies\": \"Zarządzanie informacją dzienne\",\n\t\"Password\": \"Buziaczek123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,10 +150,16 @@
 			"name": "cw5-PromoteStudents",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Index",
+						"value": "s1237",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Semester\": 1,\n\t\"Studies\": \"Sztuka nowych mediów internetowe\"\n}",
+					"raw": "{\n\t\"Semester\": 1,\n\t\"Studies\": \"Test\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -166,6 +178,79 @@
 						"enrollment",
 						"promotions",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw5-LogIn",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Index",
+						"value": "s1234",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Index\": \"s1237\",\n\t\"Password\": \"Buziaczek123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/students/login/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw5-refresh",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Index",
+						"type": "text",
+						"value": "s1234"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"refreshToken\" : \"nvys8+O7/0+B0EpUwIsYFQ==\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/students/refresh",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"refresh"
 					]
 				}
 			},

@@ -1,5 +1,6 @@
 ﻿using cw5.DTO.Request;
 using cw5.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cw5.Controllers
@@ -8,6 +9,7 @@ namespace cw5.Controllers
     [Route("api/enrollment")]
     public class EnrollmentController : ControllerBase
     {
+        private const string Employee = "employee";
         private readonly IEnrollmentsDbService _enrollmentsDbService;
 
         public EnrollmentController(IEnrollmentsDbService enrollmentsDbService)
@@ -17,6 +19,7 @@ namespace cw5.Controllers
 
         [HttpPost]
         [Route("enrollNewStudent")]
+        [Authorize(Roles = "employee")]
         public IActionResult EnrollNewStudent(EnrollmentStudentRequest enrollmentStudentRequest)
         {
             return Ok(_enrollmentsDbService.EnrollNewStudent(enrollmentStudentRequest));
@@ -24,6 +27,7 @@ namespace cw5.Controllers
 
         [HttpPost]
         [Route("promotions")]
+        [Authorize(Roles = "employee")]
         public IActionResult PromoteStudents(PromoteStudentsRequest promoteStudentsRequest)
         {
             return Ok(_enrollmentsDbService.PromoteStudents(promoteStudentsRequest));

@@ -48,6 +48,14 @@ namespace cw5.Middleware
                         StatusCode =  StatusCodes.Status404NotFound,
                         Message = exception.Message
                     }.ToString());
+                case BadLoginOrPasswordException _:
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return context.Response.WriteAsync(new ErrorDetails
+                    {
+                        StatusCode =  StatusCodes.Status401Unauthorized,
+                        Message = exception.Message
+                    }.ToString());
                    default:
                        context.Response.ContentType = "application/json";
                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
