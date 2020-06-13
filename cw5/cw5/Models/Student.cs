@@ -1,17 +1,19 @@
-﻿namespace cw5.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace cw5.Models
 {
-    public class Student
+    public partial class Student
     {
-        
+        public string IndexNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string StudiesName { get; set; }
-        public string BirthDate { get; set; }
-        public int Semester { get; set; }
+        public DateTime BirthDate { get; set; }
+        public int IdEnrollment { get; set; }
+        public string Password { get; set; }
+        public string RefreshToken { get; set; }
+        public byte[] Salt { get; set; }
 
-        public override string ToString()
-        {
-            return FirstName + ", " + LastName + ", " + StudiesName + ", " + BirthDate + ", " + Semester;
-        }
+        public virtual Enrollment IdEnrollmentNavigation { get; set; }
     }
 }

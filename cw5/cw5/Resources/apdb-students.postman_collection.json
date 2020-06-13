@@ -1,31 +1,10 @@
 {
 	"info": {
 		"_postman_id": "cc6ffd00-134e-467f-9020-a139dd32d8ff",
-		"name": "apdb",
+		"name": "apdb-students",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "cw4-getAllStudents",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/api/students/getAllStudents",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"api",
-						"students",
-						"getAllStudents"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "cw4-getStudentByIndexNumberSqlInjectionInVulnerable",
 			"request": {
@@ -48,6 +27,27 @@
 							"key": "indexNumber",
 							"value": "s11111"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw4-getAllStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/students/getAllStudents",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"getAllStudents"
 					]
 				}
 			},
@@ -327,6 +327,173 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "cw10-getStudentList",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Index",
+						"type": "text",
+						"value": "s1234"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/students/getList",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"getList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw10-update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Index",
+						"type": "text",
+						"value": "s1234"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"IndexNumber\": \"s11115\",\r\n    \"FirstName\": \"Prudencjusz\",\r\n    \"LastName\": \"Pomidor\",\r\n    \"BirthDate\": \"2000-12-10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/students/update?indexNumber=s11114",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"update"
+					],
+					"query": [
+						{
+							"key": "indexNumber",
+							"value": "s11114"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw10-delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Index",
+						"type": "text",
+						"value": "s1234"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/students/delete?index=s1234",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"students",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "s1234"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cw10-PromoteStudentsEntity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Index",
+						"type": "text",
+						"value": "s11111"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Semester\": 1,\n\t\"Studies\": \"Sztuka nowych mediów zaoczne\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/enrollment/promotionsEntity/?index=s1234",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"enrollment",
+						"promotionsEntity",
+						""
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "s1234"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "98419180-8ebd-49b0-ba3a-5fd50a793d90",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f75fe44f-f20a-4e88-a71f-2092b392112a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}

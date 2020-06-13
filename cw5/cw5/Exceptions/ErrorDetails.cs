@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace cw5.Models
+namespace cw5.Exceptions
 {
     public class ErrorDetails
     {

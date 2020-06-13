@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
+using cw5.DTO.Request;
 using cw5.DTO.Response;
 using cw5.Exceptions;
 using cw5.Models;
@@ -42,7 +44,7 @@ namespace cw5.Services.impl
 
             return students;
         }
-
+        
         public StudentWithStudiesResponse GetStudentByIndexNumberSqlInjectionInVulnerable(string indexNumber)
         {
             var sqlQuery = "SELECT S.FirstName, S.LastName, S.BirthDate, St.Name, E.Semester FROM Student S " +
@@ -86,5 +88,67 @@ namespace cw5.Services.impl
 
             return Convert.ToBoolean(Parse(command.ExecuteScalar().ToString()));
         }
+
+        public IEnumerable<GetStudentListResponse> GetStudentList()
+        {
+            return  new StudentDbContext().Student
+                .Select(student => new GetStudentListResponse
+                {
+                    IndexNumber = student.IndexNumber,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    BirthDay = student.BirthDate
+                }).ToList();
+        }
+        
+        public void UpdateStudent(string indexNumber, UpdateStudentRequest updateStudentRequest)
+        {
+            
+            var studentContext = new StudentDbContext();
+            var updatedStudent = studentContext.Student
+                .First(student => indexNumber.Equals(student.IndexNumber));
+
+            if (updatedStudent.Equals(null))
+            {
+                throw new ResourceNotFoundException("Student with index number " + indexNumber 
+                                                                                 + " not in database");
+            }
+
+            if (!indexNumber.Equals(updateStudentRequest.IndexNumber))
+            {
+                if (studentContext.Student
+                    .ToList()
+                    .Any(student => updatedStudent.IndexNumber.Equals(student.IndexNumber)))
+                {
+                    throw new ObjectAlreadyInDatabaseException(
+                        "Can't update student with index number " + indexNumber 
+                                                                  + " - number already in database");
+                }
+                updatedStudent.IndexNumber = updateStudentRequest.IndexNumber;
+            }
+
+            updatedStudent.FirstName = updateStudentRequest.FirstName;
+            updatedStudent.LastName = updateStudentRequest.LastName;
+            updatedStudent.BirthDate = DateTime.Parse(updateStudentRequest.BirthDate);
+            studentContext.SaveChanges();
+        }
+
+        public void RemoveStudent(string indexNumber)
+        {
+            var studentContext = new StudentDbContext();
+            var removeStudent = studentContext.Student
+                .First(student => indexNumber.Equals(student.IndexNumber));
+
+            if (removeStudent.Equals(null))
+            {
+                throw new ResourceNotFoundException("Student with index number " + indexNumber + " not in database");
+            }
+
+            studentContext.Remove(removeStudent);
+            studentContext.SaveChanges();
+        }
     }
+    
+    
+    
 }

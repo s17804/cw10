@@ -21,7 +21,7 @@ namespace cw5.Controllers
 
         [HttpGet]
         [Route("getAllStudents")]
-        public IActionResult GetAllStudents(string studentIndex)
+        public IActionResult GetAllStudents()
         {
             return Ok(_studentsDbService.GetAllStudents());
         }
@@ -66,5 +66,32 @@ namespace cw5.Controllers
                 refreshToken = tokens.RefreshToken
             });
         }
+        
+        [HttpPut]
+        [Authorize(Roles = "employee")]
+        [Route("update")]
+        public IActionResult UpdateStudent(string indexNumber, UpdateStudentRequest updateStudentRequest)
+        {
+            _studentsDbService.UpdateStudent(indexNumber, updateStudentRequest);
+            return Ok("Student with index number " + indexNumber + " was successfully updated");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "employee")]
+        [Route("getList")]
+        public IActionResult GetStudentList()
+        {
+            return Ok(_studentsDbService.GetStudentList());
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "employee")]
+        [Route("remove")]
+        public IActionResult RemoveStudent(string indexNumber)
+        {
+            _studentsDbService.RemoveStudent(indexNumber);
+            return Ok("Student with index number " + indexNumber + " was successfully removed");
+        }
+        
     }
 }

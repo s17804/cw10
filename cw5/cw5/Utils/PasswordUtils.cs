@@ -11,12 +11,10 @@ namespace cw5.Utils
 
         public static string CreateSaltedPasswordHash(string password, byte[] salt)
         {
-          
             var hashValue = GenerateHashValue(password, salt);
             return Convert.ToBase64String(hashValue);
         }
-
-
+        
         public static byte[] GenerateSalt()
         {
             var randomNumberGenerator = new RNGCryptoServiceProvider();

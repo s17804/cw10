@@ -48,5 +48,24 @@ namespace cw5.Controllers
 
             return NotFound($"Enrollment for Student with indexNumber = {indexNumber} not found");
         }
+        
+        [HttpPost]
+        [Route("enrollNewStudentEntity")]
+        [Authorize(Roles = "employee")]
+        public IActionResult EnrollNewStudentEntity(EnrollmentStudentRequest enrollmentStudentRequest)
+        {
+            return Ok(_enrollmentsDbService.EnrollNewStudentEntity(enrollmentStudentRequest));
+        }
+        
+        [HttpPost]
+        [Route("promotionsEntity")]
+        [Authorize(Roles = "employee")]
+        public IActionResult PromoteStudentsEntity(PromoteStudentsRequest promoteStudentsRequest)
+        {
+            return Ok(_enrollmentsDbService.PromoteStudentsEntity(promoteStudentsRequest));
+        }
+        
+        
+        
     }
 }

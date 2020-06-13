@@ -10,5 +10,10 @@ namespace cw5.Services
         EnrollmentResponse EnrollNewStudent(EnrollmentStudentRequest enrollmentStudentRequest);
 
         EnrollmentResponse PromoteStudents(PromoteStudentsRequest promoteStudentsRequest);
+        
+        EnrollmentResponse EnrollNewStudentEntity(EnrollmentStudentRequest enrollmentStudentRequest);
+
+        EnrollmentResponse PromoteStudentsEntity(PromoteStudentsRequest promoteStudentsRequest);
+        
     }
 }
